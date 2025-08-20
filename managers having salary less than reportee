@@ -1,0 +1,41 @@
+#Find employees with salary more than their managers salary
+
+create table emp(emp_id int,emp_name varchar(10),salary int ,manager_id int);
+
+insert into emp values(1,'Ankit',10000,4);
+insert into emp values(2,'Mohit',15000,5);
+insert into emp values(3,'Vikas',10000,4);
+insert into emp values(4,'Rohit',5000,2);
+insert into emp values(5,'Mudit',12000,6);
+insert into emp values(6,'Agam',12000,2);
+insert into emp values(7,'Sanjay',9000,2);
+insert into emp values(8,'Ashish',5000,2);
+
+select * from emp;
+
++--------+----------+--------+------------+
+| emp_id | emp_name | salary | manager_id |
++--------+----------+--------+------------+
+|      1 | Ankit    |  10000 |          4 |
+|      2 | Mohit    |  15000 |          5 |
+|      3 | Vikas    |  10000 |          4 |
+|      4 | Rohit    |   5000 |          2 |
+|      5 | Mudit    |  12000 |          6 |
+|      6 | Agam     |  12000 |          2 |
+|      7 | Sanjay   |   9000 |          2 |
+|      8 | Ashish   |   5000 |          2 |
++--------+----------+--------+------------+
+
+
+with cte as
+(select emp1.emp_id,emp1.emp_name,mgr.emp_name as manager_name,emp1.salary as salary,mgr.salary as manager_salary  
+from emp emp1 join emp mgr on emp1.manager_id = mgr.emp_id order by emp1.emp_id)
+select * from cte where salary > manager_salary;
+
++--------+----------+--------------+--------+----------------+
+| emp_id | emp_name | manager_name | salary | manager_salary |
++--------+----------+--------------+--------+----------------+
+|      1 | Ankit    | Rohit        |  10000 |           5000 |
+|      2 | Mohit    | Mudit        |  15000 |          12000 |
+|      3 | Vikas    | Rohit        |  10000 |           5000 |
++--------+----------+--------------+--------+----------------+
