@@ -1,3 +1,4 @@
+--create a points table with Team_Name | Matches_Played | no_of_wins | no_of_losses
 create table icc_world_cup
 (
 Team_1 Varchar(20),
