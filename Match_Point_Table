@@ -33,7 +33,7 @@ select team,matches_played,ifnull(wins,0) as no_of_wins,
 (matches_played - ifnull(wins,0)) as no_of_losses
 from team_matches a left join no_of_wins b on a.team = b.winner;
 
-
+----------------------------------------------------------------------------------------------
 
 WITH all_teams AS (
     SELECT team_1 AS team, winner FROM icc_world_cup
@@ -45,7 +45,7 @@ sum(case when team = winner then 1 else 0 end) as no_of_wins,
 count(*) - sum(case when team = winner then 1 else 0 end) as no_of_losses
 from all_teams group by team
 
-
+--------------------------------------------------------------------------------
 
 with team_name as
 (select Team_1 as Team_Name, case when Team_1 = Winner then 1 else 0 end as win_flag from icc_world_cup
