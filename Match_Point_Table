@@ -63,3 +63,26 @@ select Team_Name, count(Team_Name) as Matches_Played,sum(win_flag) as no_of_wins
 | Aus       |              2 |          1 |            1 |
 | NZ        |              1 |          1 |            0 |
 +-----------+----------------+------------+--------------+
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+PYSPARK CODE
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+from pyspark.sql.functions import *
+df1 = icc_world_cup.select(col("team_1").alias("team"),"winner")
+df2 = icc_world_cup.select(col("team_2").alias("team"),"winner")
+all_teams = df1.union(df2)
+all_teams.show()
+
+#aggregation
+result  = (
+    all_teams.groupBy(col("team")).agg(
+    count("*").alias("matches_played"),
+    sum(when(col("team") == col("winner"),1).otherwise(0)).alias("no_of_wins")
+)
+    .withColumn("no_of_losses",col("matches_played") - col("no_of_wins"))
+    
+)
+
+result.show()
